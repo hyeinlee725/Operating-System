@@ -3,17 +3,16 @@
 *@since 2019.12.20
 */
 import java.util.Scanner;
-
 //======================Process Setting======================
 abstract class ProcessSetting{
   public int processname; //p1, p2, p3
-  public int as; //µµÂø ¼ø¼­, 1 or 2 or 3
-  public int at; //µµÂø ½Ã°£, ¹İµå½Ã µµÂø ¼ø¼­¸¦ ¸ÂÃç¾ßÇÔ
-  public int pt; //ÀÛ¾÷ ½Ã°£
-  public int wt; //´ë±â ½Ã°£
-  public int it; //ÇÁ·Î¼¼½º°¡ ÀÛµ¿ÇÑ ½Ã°£
-  public int rt; //³²Àº ½Ã°£, pt-it
-  public int responsetime;//¹İÈ¯ ½Ã°£
+  public int as; //ë„ì°© ìˆœì„œ, 1 or 2 or 3
+  public int at; //ë„ì°© ì‹œê°„, ë°˜ë“œì‹œ ë„ì°© ìˆœì„œë¥¼ ë§ì¶°ì•¼í•¨
+  public int pt; //ì‘ì—… ì‹œê°„
+  public int wt; //ëŒ€ê¸° ì‹œê°„
+  public int it; //í”„ë¡œì„¸ìŠ¤ê°€ ì‘ë™í•œ ì‹œê°„
+  public int rt; //ë‚¨ì€ ì‹œê°„, pt-it
+  public int responsetime;//ë°˜í™˜ ì‹œê°„
 
   ProcessSetting(){};
   ProcessSetting(int pn,int as,int at,int pt){
@@ -25,17 +24,17 @@ abstract class ProcessSetting{
 }
 
 //======================MakeProcess=========================
-class Mp1 extends ProcessSetting{             //ÇÁ·Î¼¼½º 1
+class Mp1 extends ProcessSetting{             //í”„ë¡œì„¸ìŠ¤ 1
   public Mp1(int pn, int as, int at, int pt){
     super(pn,as,at,pt);
   }
 }
-class Mp2 extends ProcessSetting{             //ÇÁ·Î¼¼½º 2
+class Mp2 extends ProcessSetting{             //í”„ë¡œì„¸ìŠ¤ 2
   public Mp2(int pn,int as, int at, int pt){
     super(pn,as,at,pt);
   }
 }
-class Mp3 extends ProcessSetting{             //ÇÁ·Î¼¼½º 3
+class Mp3 extends ProcessSetting{             //í”„ë¡œì„¸ìŠ¤ 3
   public Mp3(int pn, int as, int at, int pt){
     super(pn,as,at,pt);
   }
@@ -44,69 +43,69 @@ class Mp3 extends ProcessSetting{             //ÇÁ·Î¼¼½º 3
 //=====================Queue==============================//
 class Circular_Queue {
 
-    int rear = 0;           //½ÃÀÛ ¹øÈ£: 0
-    int front = 0;          //½ÃÀû ¹øÈ£: 0
-    int maxsize = 0;        //¹è¿­ Å©±â
-    ProcessSetting[] circular_Queue;  //ÇÁ·Î¼¼½º°¡ µé¾îÀÖ´Â ¹è¿­
+    int rear = 0;           //ì‹œì‘ ë²ˆí˜¸: 0
+    int front = 0;          //ì‹œì  ë²ˆí˜¸: 0
+    int maxsize = 0;        //ë°°ì—´ í¬ê¸°
+    ProcessSetting[] circular_Queue;  //í”„ë¡œì„¸ìŠ¤ê°€ ë“¤ì–´ìˆëŠ” ë°°ì—´
 
-    public Circular_Queue(int maxsize){ //»õ·Î¿î Å¥ »ı¼º½Ã »ç¿ë
-        this.maxsize = maxsize;         //ÀÔ·ÂÇÑ Å©±âÀÇ Å¥ »ı¼º
+    public Circular_Queue(int maxsize){ //ìƒˆë¡œìš´ í ìƒì„±ì‹œ ì‚¬ìš©
+        this.maxsize = maxsize;         //ì…ë ¥í•œ í¬ê¸°ì˜ í ìƒì„±
         circular_Queue = new ProcessSetting[this.maxsize];
     }
 
-    public boolean EmptyCheck(){    //Å¥°¡ ºñ¾ú´ÂÁö È®ÀÎ
+    public boolean EmptyCheck(){    //íê°€ ë¹„ì—ˆëŠ”ì§€ í™•ì¸
         if(rear == front){
             return true;
         }
         return false;
     }
 
-    public boolean FullCheck(){      //Å¥°¡ ²ËÃ¡´ÂÁö È®ÀÎ
-        if((rear+1)%maxsize == front){  //²ËÂü
+    public boolean FullCheck(){      //íê°€ ê½‰ì°¼ëŠ”ì§€ í™•ì¸
+        if((rear+1)%maxsize == front){  //ê½‰ì°¸
             return true;
         }
-        return false;   //¾È²ËÂü
+        return false;   //ì•ˆê½‰ì°¸
     }
 
-    public void EnQueue(ProcessSetting p){  //Å¥¿¡ »õ·Î¿î ÇÁ·Î¼¼½º »ğÀÔ
-        if(FullCheck()){      //Å¥°¡ ²ËÃ¡À¸¸é
+    public void EnQueue(ProcessSetting p){  //íì— ìƒˆë¡œìš´ í”„ë¡œì„¸ìŠ¤ ì‚½ì…
+        if(FullCheck()){      //íê°€ ê½‰ì°¼ìœ¼ë©´
             System.out.println("Queue is Full!!");
         }
-        else{                 //Å¥°¡ ²ËÂ÷Áö ¾ÊÀº °æ¿ì
+        else{                 //íê°€ ê½‰ì°¨ì§€ ì•Šì€ ê²½ìš°
             rear = (rear+1) % maxsize;
             circular_Queue[rear]=p;
         }
     }
 
-    public void nextPoint(){  //Dequeue¿Í °°Àº °³³äÀÌÁö¸¸ ¹İÈ¯ÇÏÁö´Â ¾Ê°í Æ÷ÀÎÅÍ¸¸ ¿Å±â´Â ÇÔ¼ö
+    public void nextPoint(){  //Dequeueì™€ ê°™ì€ ê°œë…ì´ì§€ë§Œ ë°˜í™˜í•˜ì§€ëŠ” ì•Šê³  í¬ì¸í„°ë§Œ ì˜®ê¸°ëŠ” í•¨ìˆ˜
 
-        if(EmptyCheck()){          //¹è¿­ÀÌ ºñ¾îÀÖ´Â °æ¿ì
+        if(EmptyCheck()){          //ë°°ì—´ì´ ë¹„ì–´ìˆëŠ” ê²½ìš°
             System.out.println("empty!");
         }
-        else  {                   //¹è¿­ÀÌ ºñ¾îÀÖÁö ¾ÊÀº °æ¿ì, Æ÷ÀÎÅÍ¸¸ ¿Å±è(¿ø¼Ò »èÁ¦)
+        else  {                   //ë°°ì—´ì´ ë¹„ì–´ìˆì§€ ì•Šì€ ê²½ìš°, í¬ì¸í„°ë§Œ ì˜®ê¹€(ì›ì†Œ ì‚­ì œ)
             front = (front+1)%maxsize;
         }
     }
 
-    public ProcessSetting DeQueue(){  //DequeueÇÔ¼ö, ÇÁ·Î¼¼½º¸¦ ¹İÈ¯ÇÔ
-      front = (front+1)%maxsize;      //¿ø¼Ò »èÁ¦
-      return circular_Queue[front];   //»èÁ¦ÇÑ ÇÁ·Î¼¼½º ¹İÈ¯
+    public ProcessSetting DeQueue(){  //Dequeueí•¨ìˆ˜, í”„ë¡œì„¸ìŠ¤ë¥¼ ë°˜í™˜í•¨
+      front = (front+1)%maxsize;      //ì›ì†Œ ì‚­ì œ
+      return circular_Queue[front];   //ì‚­ì œí•œ í”„ë¡œì„¸ìŠ¤ ë°˜í™˜
     }
 }
 //======================Scheduling=========================
 class Scheduling{
 
-  Circular_Queue queue=new Circular_Queue(4);         //ÇÁ·Î¼¼½º ½ÇÇà Å¥
-  Circular_Queue finishQueue=new Circular_Queue(4);   //ÇÁ·Î¼¼½º°¡ Á¾·áµÇ¸é µé¾î°¡´Â Å¥
-  public static Mp1 p1;         //ÇÁ·Î¼¼½º 1
-  public static Mp2 p2;         //ÇÁ·Î¼¼½º 2
-  public static Mp3 p3;         //ÇÁ·Î¼¼½º 3
-  public static int Time;       //ÀüÃ¼ ÇÁ·Î¼¼½º ½Ã°£
+  Circular_Queue queue=new Circular_Queue(4);         //í”„ë¡œì„¸ìŠ¤ ì‹¤í–‰ í
+  Circular_Queue finishQueue=new Circular_Queue(4);   //í”„ë¡œì„¸ìŠ¤ê°€ ì¢…ë£Œë˜ë©´ ë“¤ì–´ê°€ëŠ” í
+  public static Mp1 p1;         //í”„ë¡œì„¸ìŠ¤ 1
+  public static Mp2 p2;         //í”„ë¡œì„¸ìŠ¤ 2
+  public static Mp3 p3;         //í”„ë¡œì„¸ìŠ¤ 3
+  public static int Time;       //ì „ì²´ í”„ë¡œì„¸ìŠ¤ ì‹œê°„
 
   //---------------------------------------------------------------------------
-  public void inputProcess(){ //ÇÁ·Î¼¼½º Á¤º¸ ÀÔ·Â
+  public void inputProcess(){ //í”„ë¡œì„¸ìŠ¤ ì •ë³´ ì…ë ¥
     Scanner sc=new Scanner(System.in);
-    for(int i=0;i<3;i++){     //3°³ÀÇ ÇÁ·Î¼¼½º »ı¼º
+    for(int i=0;i<3;i++){     //3ê°œì˜ í”„ë¡œì„¸ìŠ¤ ìƒì„±
       System.out.print("\n");
       System.out.printf("Enter Arrival Sequence of Process(1 or 2 or 3) %d: ",i+1);
       int as = sc.nextInt();
@@ -116,88 +115,88 @@ class Scheduling{
       int pt = sc.nextInt();
       System.out.print("\n");
 
-      if(i==0){                 //ÇÁ·Î¼¼½º 1
-        p1=new Mp1(1,as,at,pt); //ÇÁ·Î¼¼½º ¼ø¼­, µµÂø ½Ã°£, ÀÛ¾÷ ½Ã°£ ÀÔ·Â
-        p1.rt=p1.pt;            //Ã³À½ ½ÃÀÛ ½Ã ÇÁ·Î¼¼½º ³²Àº ½Ã°£=ÇÁ·Î¼¼½º ÀÛ¾÷ ½Ã°£
-        p1.wt=0;                //Ã³À½ ½ÃÀÛ ½Ã ´ë±â½Ã°£Àº 0
-        p1.it=0;                //Ã³À½ ½ÃÀÛ ½Ã ½ÇÇàÇÑ ½Ã°£Àº 0
+      if(i==0){                 //í”„ë¡œì„¸ìŠ¤ 1
+        p1=new Mp1(1,as,at,pt); //í”„ë¡œì„¸ìŠ¤ ìˆœì„œ, ë„ì°© ì‹œê°„, ì‘ì—… ì‹œê°„ ì…ë ¥
+        p1.rt=p1.pt;            //ì²˜ìŒ ì‹œì‘ ì‹œ í”„ë¡œì„¸ìŠ¤ ë‚¨ì€ ì‹œê°„=í”„ë¡œì„¸ìŠ¤ ì‘ì—… ì‹œê°„
+        p1.wt=0;                //ì²˜ìŒ ì‹œì‘ ì‹œ ëŒ€ê¸°ì‹œê°„ì€ 0
+        p1.it=0;                //ì²˜ìŒ ì‹œì‘ ì‹œ ì‹¤í–‰í•œ ì‹œê°„ì€ 0
       }
-      else if(i==1){            //ÇÁ·Î¼¼½º 2
-        p2=new Mp2(2,as,at,pt); //ÇÁ·Î¼¼½º ¼ø¼­, µµÂø ½Ã°£, ÀÛ¾÷ ½Ã°£ ÀÔ·Â
-        p2.rt=p2.pt;            //Ã³À½ ½ÃÀÛ ½Ã ÇÁ·Î¼¼½º ³²Àº ½Ã°£=ÇÁ·Î¼¼½º ÀÛ¾÷ ½Ã°£
-        p2.wt=0;                //Ã³À½ ½ÃÀÛ ½Ã ´ë±â½Ã°£Àº 0
-        p2.it=0;                //Ã³À½ ½ÃÀÛ ½Ã ½ÇÇàÇÑ ½Ã°£Àº 0
+      else if(i==1){            //í”„ë¡œì„¸ìŠ¤ 2
+        p2=new Mp2(2,as,at,pt); //í”„ë¡œì„¸ìŠ¤ ìˆœì„œ, ë„ì°© ì‹œê°„, ì‘ì—… ì‹œê°„ ì…ë ¥
+        p2.rt=p2.pt;            //ì²˜ìŒ ì‹œì‘ ì‹œ í”„ë¡œì„¸ìŠ¤ ë‚¨ì€ ì‹œê°„=í”„ë¡œì„¸ìŠ¤ ì‘ì—… ì‹œê°„
+        p2.wt=0;                //ì²˜ìŒ ì‹œì‘ ì‹œ ëŒ€ê¸°ì‹œê°„ì€ 0
+        p2.it=0;                //ì²˜ìŒ ì‹œì‘ ì‹œ ì‹¤í–‰í•œ ì‹œê°„ì€ 0
       }
-      else{                     //ÇÁ·Î¼¼½º 3
-        p3=new Mp3(3,as,at,pt); //ÇÁ·Î¼¼½º ¼ø¼­, µµÂø ½Ã°£, ÀÛ¾÷ ½Ã°£ ÀÔ·Â
-        p3.rt=p3.pt;            //Ã³À½ ½ÃÀÛ ½Ã ÇÁ·Î¼¼½º ³²Àº ½Ã°£=ÇÁ·Î¼¼½º ÀÛ¾÷ ½Ã°£
-        p3.wt=0;                //Ã³À½ ½ÃÀÛ ½Ã ´ë±â½Ã°£Àº 0
-        p3.it=0;                //Ã³À½ ½ÃÀÛ ½Ã ½ÇÇàÇÑ ½Ã°£Àº 0
+      else{                     //í”„ë¡œì„¸ìŠ¤ 3
+        p3=new Mp3(3,as,at,pt); //í”„ë¡œì„¸ìŠ¤ ìˆœì„œ, ë„ì°© ì‹œê°„, ì‘ì—… ì‹œê°„ ì…ë ¥
+        p3.rt=p3.pt;            //ì²˜ìŒ ì‹œì‘ ì‹œ í”„ë¡œì„¸ìŠ¤ ë‚¨ì€ ì‹œê°„=í”„ë¡œì„¸ìŠ¤ ì‘ì—… ì‹œê°„
+        p3.wt=0;                //ì²˜ìŒ ì‹œì‘ ì‹œ ëŒ€ê¸°ì‹œê°„ì€ 0
+        p3.it=0;                //ì²˜ìŒ ì‹œì‘ ì‹œ ì‹¤í–‰í•œ ì‹œê°„ì€ 0
       }
     }
   }
 
 //---------------------------------------------------------------------------
-  public void inputQueue(){ //½ÃÀÛÇÒ ¶§ ÇÁ·Î¼¼½º¸¦ ³ÖÀ½
+  public void inputQueue(){ //ì‹œì‘í•  ë•Œ í”„ë¡œì„¸ìŠ¤ë¥¼ ë„£ìŒ
     Scheduling sd=new Scheduling();
-    sd.inputProcess();    //ÇÁ·Î¼¼½º Á¤º¸ ÀÔ·Â¹ŞÀ½
+    sd.inputProcess();    //í”„ë¡œì„¸ìŠ¤ ì •ë³´ ì…ë ¥ë°›ìŒ
 
     for (int i=1;i<=3;i++){
       if(p1.as==i){
-        queue.EnQueue(p1);  //ÇÁ·Î¼¼½º 1 ³ÖÀ½
+        queue.EnQueue(p1);  //í”„ë¡œì„¸ìŠ¤ 1 ë„£ìŒ
       }
       else if(p2.as==i){
-        queue.EnQueue(p2);  //ÇÁ·Î¼¼½º 2 ³ÖÀ½
+        queue.EnQueue(p2);  //í”„ë¡œì„¸ìŠ¤ 2 ë„£ìŒ
       }
       else{ //p3.as=i
-        queue.EnQueue(p3);  //ÇÁ·Î¼¼½º 3 ³ÖÀ½
+        queue.EnQueue(p3);  //í”„ë¡œì„¸ìŠ¤ 3 ë„£ìŒ
       }
     }
   }
 
   //---------------------------------------------------------------------------
-  public void startScheduling(){  //½ºÄÉÁÙ¸µ ½ÃÀÛ
+  public void startScheduling(){  //ìŠ¤ì¼€ì¤„ë§ ì‹œì‘
     System.out.println("==========Start==========");
-    System.out.println("-----------------"+Time); //½Ã°£ Ãâ·Â
+    System.out.println("-----------------"+Time); //ì‹œê°„ ì¶œë ¥
 
-    while(queue.rear!=queue.front){     //Å¥°¡ ºñ¾îÀÖÁö ¾ÊÀ¸¸é
-      if(queue.circular_Queue[(queue.front+1)%4].at<=Time){ //ÇÁ·Î¼¼½ºÀÇ µµÂø ½Ã°£ÀÌ ÇöÀç ½Ã°£º¸´Ù Å« °æ¿ì, ÇÁ·Î¼¼½º°¡ µµÂøÇÏÁö ¾Ê¾Ò´Ù°í °¡Á¤ÇÏ°í ½ÇÇàÇÏÁö ¾Ê´Â´Ù.
-        queue.circular_Queue[(queue.front+1)%4].it += queue.circular_Queue[(queue.front+1)%4].rt; //ÇÁ·Î¼¼½º°¡ ÁøÇàµÈ ½Ã°£¿¡ ÀÌ¹ø ÇÁ·Î¼¼½º°¡ ÁøÇàµÉ ½Ã°£(ÀÌ¹ø¿¡ ÁøÇàµÉ ÇÁ·Î¼¼½ºÀÇ ³²Àº ½Ã°£)À» ´õÇÑ´Ù.
+    while(queue.rear!=queue.front){     //íê°€ ë¹„ì–´ìˆì§€ ì•Šìœ¼ë©´
+      if(queue.circular_Queue[(queue.front+1)%4].at<=Time){ //í”„ë¡œì„¸ìŠ¤ì˜ ë„ì°© ì‹œê°„ì´ í˜„ì¬ ì‹œê°„ë³´ë‹¤ í° ê²½ìš°, í”„ë¡œì„¸ìŠ¤ê°€ ë„ì°©í•˜ì§€ ì•Šì•˜ë‹¤ê³  ê°€ì •í•˜ê³  ì‹¤í–‰í•˜ì§€ ì•ŠëŠ”ë‹¤.
+        queue.circular_Queue[(queue.front+1)%4].it += queue.circular_Queue[(queue.front+1)%4].rt; //í”„ë¡œì„¸ìŠ¤ê°€ ì§„í–‰ëœ ì‹œê°„ì— ì´ë²ˆ í”„ë¡œì„¸ìŠ¤ê°€ ì§„í–‰ë  ì‹œê°„(ì´ë²ˆì— ì§„í–‰ë  í”„ë¡œì„¸ìŠ¤ì˜ ë‚¨ì€ ì‹œê°„)ì„ ë”í•œë‹¤.
         if((queue.front+1)%4!=queue.rear){
-          for(int k=2;k<=3;k++){  //´Ù¸¥ ÇÁ·Î¼¼½º°¡ ³²¾ÆºÃÀÚ 1°³ È¤Àº 2°³ÀÏ°ÅÀÓ
-            if((queue.rear+1)%4 != (queue.front+k)%4){  //³²Àº ÇÁ·Î¼¼½ºÀÇ °³¼ö Ã¼Å©
-              queue.circular_Queue[(queue.front+k)%4].wt+=queue.circular_Queue[(queue.front+1)%4].rt; //³²Àº ÇÁ·Î¼¼½ºÀÇ ´ë±â ½Ã°£¿¡ ÀÌ¹ø¿¡ ½ÇÇàµÈ ÇÁ·Î¼¼½ºÀÇ ½ÇÇà ½Ã°£(ÀÌ¹ø¿¡ ½ÇÇàµÈ ÇÁ·Î¼¼½ºÀÇ ³²Àº ½Ã°£)¸¸Å­ Ãß°¡
+          for(int k=2;k<=3;k++){  //ë‹¤ë¥¸ í”„ë¡œì„¸ìŠ¤ê°€ ë‚¨ì•„ë´¤ì 1ê°œ í˜¹ì€ 2ê°œì¼ê±°ì„
+            if((queue.rear+1)%4 != (queue.front+k)%4){  //ë‚¨ì€ í”„ë¡œì„¸ìŠ¤ì˜ ê°œìˆ˜ ì²´í¬
+              queue.circular_Queue[(queue.front+k)%4].wt+=queue.circular_Queue[(queue.front+1)%4].rt; //ë‚¨ì€ í”„ë¡œì„¸ìŠ¤ì˜ ëŒ€ê¸° ì‹œê°„ì— ì´ë²ˆì— ì‹¤í–‰ëœ í”„ë¡œì„¸ìŠ¤ì˜ ì‹¤í–‰ ì‹œê°„(ì´ë²ˆì— ì‹¤í–‰ëœ í”„ë¡œì„¸ìŠ¤ì˜ ë‚¨ì€ ì‹œê°„)ë§Œí¼ ì¶”ê°€
             }
           }
         }
 
-        Time+=queue.circular_Queue[(queue.front+1)%4].rt; //ÀüÃ¼ ½Ã°£¿¡ ÀÌ¹ø¿¡ ½ÇÇàµÈ ÇÁ·Î¼¼½ºÀÇ ½ÇÇà ½Ã°£(ÀÌ¹ø¿¡ ½ÇÇàµÈ ÇÁ·Î¼¼½ºÀÇ ³²Àº ½Ã°£)¸¸Å­ Ãß°¡
+        Time+=queue.circular_Queue[(queue.front+1)%4].rt; //ì „ì²´ ì‹œê°„ì— ì´ë²ˆì— ì‹¤í–‰ëœ í”„ë¡œì„¸ìŠ¤ì˜ ì‹¤í–‰ ì‹œê°„(ì´ë²ˆì— ì‹¤í–‰ëœ í”„ë¡œì„¸ìŠ¤ì˜ ë‚¨ì€ ì‹œê°„)ë§Œí¼ ì¶”ê°€
 
-        queue.circular_Queue[(queue.front+1)%4].rt = queue.circular_Queue[(queue.front+1)%4].pt - queue.circular_Queue[(queue.front+1)%4].it; //ÀÌ¹ø¿¡ ½ÇÇàµÈ ÇÁ·Î¼¼½ºÀÇ ³²Àº ½Ã°£=ÀüÃ¼ ÀÛ¾÷ ½Ã°£ - ÇöÀç±îÁö ÁøÇàµÈ ½Ã°£
-        finishQueue.EnQueue(queue.circular_Queue[(queue.front+1)%4]); //ÇÁ·Î¼¼½º°¡ ³¡³µÀ¸¹Ç¸£ ³¡³­ Å¥¿¡ ÀÌ¹ø¿¡ ½ÇÇàµÈ ÇÁ·Î¼¼½º¸¦ Ãß°¡
-        queue.circular_Queue[(queue.front+1)%4].responsetime=Time;    //ÇÁ·Î¼¼½ºÀÇ ¹İÈ¯ ½Ã°£Àº ÇÁ·Î¼¼½º°¡ ³¡³­ ½Ã°£°ú °°À½
+        queue.circular_Queue[(queue.front+1)%4].rt = queue.circular_Queue[(queue.front+1)%4].pt - queue.circular_Queue[(queue.front+1)%4].it; //ì´ë²ˆì— ì‹¤í–‰ëœ í”„ë¡œì„¸ìŠ¤ì˜ ë‚¨ì€ ì‹œê°„=ì „ì²´ ì‘ì—… ì‹œê°„ - í˜„ì¬ê¹Œì§€ ì§„í–‰ëœ ì‹œê°„
+        finishQueue.EnQueue(queue.circular_Queue[(queue.front+1)%4]); //í”„ë¡œì„¸ìŠ¤ê°€ ëë‚¬ìœ¼ë¯€ë¥´ ëë‚œ íì— ì´ë²ˆì— ì‹¤í–‰ëœ í”„ë¡œì„¸ìŠ¤ë¥¼ ì¶”ê°€
+        queue.circular_Queue[(queue.front+1)%4].responsetime=Time;    //í”„ë¡œì„¸ìŠ¤ì˜ ë°˜í™˜ ì‹œê°„ì€ í”„ë¡œì„¸ìŠ¤ê°€ ëë‚œ ì‹œê°„ê³¼ ê°™ìŒ
         //
-        System.out.printf("1: %d %d %d\n",p1.wt,p1.it,p1.rt); //ÇÁ·Î¼¼½º 1ÀÇ ´ë±â½Ã°£, ¼öÇàÇÑ ½Ã°£, ³²Àº ½Ã°£ Ãâ·Â
-        System.out.printf("2: %d %d %d\n",p2.wt,p2.it,p2.rt); //ÇÁ·Î¼¼½º 2ÀÇ ´ë±â½Ã°£, ¼öÇàÇÑ ½Ã°£, ³²Àº ½Ã°£ Ãâ·Â
-        System.out.printf("3: %d %d %d\n",p3.wt,p3.it,p3.rt); //ÇÁ·Î¼¼½º 3ÀÇ ´ë±â½Ã°£, ¼öÇàÇÑ ½Ã°£, ³²Àº ½Ã°£ Ãâ·Â
-        System.out.printf("process%d & finished!\n",queue.circular_Queue[(queue.front+1)%4].processname); //ÇÁ·Î¼¼½º (ÀÌ¸§)ÀÌ ÀÌ¹ø¿¡ ½ÇÇàµÇ¾î ³¡³µÀ½À» Ãâ·Â
-        System.out.println("-----------------"+Time); //½Ã°£ Ãâ·Â
+        System.out.printf("1: %d %d %d\n",p1.wt,p1.it,p1.rt); //í”„ë¡œì„¸ìŠ¤ 1ì˜ ëŒ€ê¸°ì‹œê°„, ìˆ˜í–‰í•œ ì‹œê°„, ë‚¨ì€ ì‹œê°„ ì¶œë ¥
+        System.out.printf("2: %d %d %d\n",p2.wt,p2.it,p2.rt); //í”„ë¡œì„¸ìŠ¤ 2ì˜ ëŒ€ê¸°ì‹œê°„, ìˆ˜í–‰í•œ ì‹œê°„, ë‚¨ì€ ì‹œê°„ ì¶œë ¥
+        System.out.printf("3: %d %d %d\n",p3.wt,p3.it,p3.rt); //í”„ë¡œì„¸ìŠ¤ 3ì˜ ëŒ€ê¸°ì‹œê°„, ìˆ˜í–‰í•œ ì‹œê°„, ë‚¨ì€ ì‹œê°„ ì¶œë ¥
+        System.out.printf("process%d & finished!\n",queue.circular_Queue[(queue.front+1)%4].processname); //í”„ë¡œì„¸ìŠ¤ (ì´ë¦„)ì´ ì´ë²ˆì— ì‹¤í–‰ë˜ì–´ ëë‚¬ìŒì„ ì¶œë ¥
+        System.out.println("-----------------"+Time); //ì‹œê°„ ì¶œë ¥
         //
 
-        queue.nextPoint();//ÀÌ¹ø ÇÁ·Î¼¼½º ³¡³², ´ÙÀ½ ÇÁ·Î¼¼½º·Î Å¥ÀÇ ½ÃÀÛÁöÁ¡ ÀÌµ¿
-        finishQueue.nextPoint();//Å¥°¡ ³¡³µÀ¸¹Ç·Î ³¡³­ ¼ø¼­´ë·Î finishÅ¥¿¡ µé¾î°¥ ¿¹Á¤
+        queue.nextPoint();//ì´ë²ˆ í”„ë¡œì„¸ìŠ¤ ëë‚¨, ë‹¤ìŒ í”„ë¡œì„¸ìŠ¤ë¡œ íì˜ ì‹œì‘ì§€ì  ì´ë™
+        finishQueue.nextPoint();//íê°€ ëë‚¬ìœ¼ë¯€ë¡œ ëë‚œ ìˆœì„œëŒ€ë¡œ finishíì— ë“¤ì–´ê°ˆ ì˜ˆì •
       }
       else{
-        queue.EnQueue(queue.DeQueue());//ÇÁ·Î¼¼½º°¡ ¾ÆÁ÷ µµÂøÇÏÁö ¾Ê¾ÒÀ¸¹Ç·Î ´Ù½Ã ¸Ç µÚ·Î ¿Å±è
+        queue.EnQueue(queue.DeQueue());//í”„ë¡œì„¸ìŠ¤ê°€ ì•„ì§ ë„ì°©í•˜ì§€ ì•Šì•˜ìœ¼ë¯€ë¡œ ë‹¤ì‹œ ë§¨ ë’¤ë¡œ ì˜®ê¹€
       }
     }
     //finish while
-    p1.wt-=p1.at; //ÇÁ·Î¼¼½º 1ÀÌ ³¡³µÀ¸¹Ç·Î, µµÂø ½Ã°£À» °í·ÁÇÏ¿© ´ë±â½Ã°£ ´Ù½Ã °è»ê
-    p2.wt-=p2.at; //ÇÁ·Î¼¼½º 2°¡ ³¡³µÀ¸¹Ç·Î, µµÂø ½Ã°£À» °í·ÁÇÏ¿© ´ë±â½Ã°£ ´Ù½Ã °è»ê
-    p3.wt-=p3.at; //ÇÁ·Î¼¼½º 3ÀÌ ³¡³µÀ¸¹Ç·Î, µµÂø ½Ã°£À» °í·ÁÇÏ¿© ´ë±â½Ã°£ ´Ù½Ã °è»ê
+    p1.wt-=p1.at; //í”„ë¡œì„¸ìŠ¤ 1ì´ ëë‚¬ìœ¼ë¯€ë¡œ, ë„ì°© ì‹œê°„ì„ ê³ ë ¤í•˜ì—¬ ëŒ€ê¸°ì‹œê°„ ë‹¤ì‹œ ê³„ì‚°
+    p2.wt-=p2.at; //í”„ë¡œì„¸ìŠ¤ 2ê°€ ëë‚¬ìœ¼ë¯€ë¡œ, ë„ì°© ì‹œê°„ì„ ê³ ë ¤í•˜ì—¬ ëŒ€ê¸°ì‹œê°„ ë‹¤ì‹œ ê³„ì‚°
+    p3.wt-=p3.at; //í”„ë¡œì„¸ìŠ¤ 3ì´ ëë‚¬ìœ¼ë¯€ë¡œ, ë„ì°© ì‹œê°„ì„ ê³ ë ¤í•˜ì—¬ ëŒ€ê¸°ì‹œê°„ ë‹¤ì‹œ ê³„ì‚°
     System.out.println("==========Finish==========\n\n");
 
-    //ÇÁ·Î¼¼½º°¡ µµÂøÇÑ ¼ø¼­´ë·Î Ãâ·Â, ±× ÇÁ·Î¼¼½ºÀÇ Á¤º¸ Ãâ·Â
+    //í”„ë¡œì„¸ìŠ¤ê°€ ë„ì°©í•œ ìˆœì„œëŒ€ë¡œ ì¶œë ¥, ê·¸ í”„ë¡œì„¸ìŠ¤ì˜ ì •ë³´ ì¶œë ¥
     System.out.println("=================================================================================================================");
     System.out.printf("%-25s%-25s%-25s%-25s%-25s\n","Process name", "Arrival Sequence","Arrival Time","Processing Time","Wait Time");
     for(int j=1;j<=3;j++){
@@ -205,11 +204,11 @@ class Scheduling{
     }
     System.out.println("=================================================================================================================");
 
-    //°á°ú Ãâ·Â
+    //ê²°ê³¼ ì¶œë ¥
     System.out.println("\n\n\n=============Result=============");
-    System.out.println("Whole Time: "+Time);  //3°³ÀÇ ÇÁ·Î¼¼½º°¡ ¸ğµÎ ³¡³ª´Âµ¥¿¡ °É¸° ½Ã°£
-    System.out.printf("Average Waiting Time: %.4f\n", ((double)p1.wt+(double)p2.wt+(double)p3.wt)/3); //Æò±Õ ´ë±â ½Ã°£
-    System.out.printf("Average Response Time: %.4f\n",((double)p1.responsetime+(double)p2.responsetime+(double)p3.responsetime)/3); //Æò±Õ ¹İÈ¯ ½Ã°£
+    System.out.println("Whole Time: "+Time);  //3ê°œì˜ í”„ë¡œì„¸ìŠ¤ê°€ ëª¨ë‘ ëë‚˜ëŠ”ë°ì— ê±¸ë¦° ì‹œê°„
+    System.out.printf("Average Waiting Time: %.4f\n", ((double)p1.wt+(double)p2.wt+(double)p3.wt)/3); //í‰ê·  ëŒ€ê¸° ì‹œê°„
+    System.out.printf("Average Response Time: %.4f\n",((double)p1.responsetime+(double)p2.responsetime+(double)p3.responsetime)/3); //í‰ê·  ë°˜í™˜ ì‹œê°„
     System.out.println("================================");
   }
 }
